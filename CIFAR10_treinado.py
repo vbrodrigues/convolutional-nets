@@ -62,7 +62,7 @@ saver = tf.train.Saver()
 
 #GRAPH SESSION
 with tf.Session() as sess:
-    saver.restore(sess, "trained_model_CIFAR10/cifar10_cnn.ckpt")
+    saver.restore(sess, "modelo_treinado_CIFAR10/cifar10_cnn.ckpt")
 
     match = tf.argmax(y_pred, 1)
 
