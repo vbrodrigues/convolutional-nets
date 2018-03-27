@@ -8,6 +8,6 @@ Jose Portilla.
 # Layers Visualization
 
   Watch what happens to the image that was feeded for the network to predict.
-![alt text](https://imgur.com/a/ht2cS)
+![alt text](https://imgur.com/dDdyXnv)
 
   
