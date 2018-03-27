@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 #Placeholders
-x = tf.placeholder(tf.float32, shape = [None, 32, 32, 3]) #None é determinado pelo batch_size
+x = tf.placeholder(tf.float32, shape = [None, 32, 32, 3])
 
 #Helpers
 def init_weights(shape):
@@ -36,7 +36,7 @@ def normal_full_layer(input_layer, size):
 
 
 #Creating Layers
-convo_1 = convolutional_layer(x, shape = [4, 4, 3, 32]) #As 2 primeiras dimensões(tamanho do filtro) são valores que posso escolher, desde que as duas últimas sejam 3 e 32 por causa dos canais e 32 pixels
+convo_1 = convolutional_layer(x, shape = [4, 4, 3, 32])
 convo_1_pooling = max_pool_2by2(convo_1)
 
 convo_2 = convolutional_layer(convo_1_pooling, shape = [4, 4, 32, 64])
@@ -51,8 +51,8 @@ full_layer_1 = tf.nn.relu(normal_full_layer(convo_3_flat, 1024))
 
 y_pred = normal_full_layer(full_layer_1, 10)
 
-########## MUDAR IMAGEM PARA PREVER NA PRÓXIMA LINHA ################
-img = Image.open("C:/dev/Tensorflow-Bootcamp-master/03-Convolutional-Neural-Networks/caminhao.jpg")
+########## FEED THE IMAGE YOU WANT PROVIDING THE DIRECTORY INSIDE THE EMPTY STRING ################
+img = Image.open("") #Image Here
 img_rsz = resizeimage.resize_contain(img, [32, 32])
 img_input = img_rsz.convert("RGB")
 img_input = np.asarray(img_input)
@@ -62,14 +62,15 @@ saver = tf.train.Saver()
 
 #GRAPH SESSION
 with tf.Session() as sess:
-    saver.restore(sess, "modelo_treinado_CIFAR10/cifar10_cnn.ckpt")
+    saver.restore(sess, "trained_model_CIFAR10/cifar10_cnn.ckpt")
 
     match = tf.argmax(y_pred, 1)
 
-    print("\nA imagem é um: ")
+    print("\nThe image is: ")
     guess = sess.run(match, feed_dict = {x: img_input.eval()})
 
-    labels = {"l0": "Avião!", "l1": "Carro!", "l2": "Pássaro!", "l3": "Gato!", "l4": "Veado!", "l5": "Cachorro!", "l6": "Sapo!", "l7": "Cavalo!", "l8": "Navio!", "l9": "Caminhão!"}
+    labels = {"l0": "Airplane!", "l1": "Automobile!", "l2": "Bird!", "l3": "Cat!", "l4": "Deer!", "l5": "Dog!",
+              "l6": "Frog!", "l7": "Horse!", "l8": "Ship!", "l9": "Truck!"}
     predictions = []
     for i in range(10):
         if guess == [i]:
@@ -85,8 +86,7 @@ with tf.Session() as sess:
     after_filter_3 = convo_3_pooling
     img_plot_3 = sess.run(after_filter_3, feed_dict = {x: img_input.eval()})
     fig = plt.figure()
-    fig.canvas.set_window_title('Imagens e Resultados das Convoluções')
-    # plt.title("Resultados das convoluções e resultados:", fontsize=15)
+    fig.canvas.set_window_title('Images and Results')
     plt.axis("off")
     ax1 = fig.add_subplot(3, 2, 1)
     ax1.imshow(img_rsz)
@@ -115,6 +115,5 @@ with tf.Session() as sess:
     t = plt.text(.5, .5, predictions[0], horizontalalignment='center', verticalalignment='center', size = 20, bbox=dict(facecolor='green', alpha=0.5, boxstyle="round"))
     plt.axis("off")
     plt.title("Output")
-    # fig.tight_layout()
     fig.subplots_adjust(wspace = .001,hspace = 0.8)
     plt.show()
